@@ -3,7 +3,7 @@ package com.dawkastresu.medical_clinic;
 import lombok.Data;
 
 import java.time.LocalDate;
-
+//Adnotacja Data pozwala wygenerować potrzebne boilerplate'y - Konstruktory, Gettery, Settery, Equals hash code oraz toString.
 @Data
 public class Patient {
     private String email;
