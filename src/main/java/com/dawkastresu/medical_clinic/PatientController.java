@@ -1,6 +1,7 @@
 package com.dawkastresu.medical_clinic;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,12 +24,16 @@ public class PatientController {
     public Patient getPatientByMail(@PathVariable String email) {
         return patientService.findPatientByName(email);
     }
+//ResponseStatus okresla status zwracany w odpowiedzi http - 201 CREATED
+    @ResponseStatus(HttpStatus.CREATED)
 //PostMapping określa enpoint /patients dla metody http POST - czyli dodanie nowego zasobu
     @PostMapping
     public Patient addNewPatient(@RequestBody Patient patient) {
         patientService.addNewPatient(patient);
         return patient;
     }
+//ResponseStatus okresla status zwracany w odpowiedzi http - 204 NO CONTENT
+    @ResponseStatus(HttpStatus.NO_CONTENT)
 //DeleteMapping/email okresla endpoint /patients/email, gdzie email to zmienna ścieżkowa, obsluguje zapytania HTTP DELETE, całkowicie usuwa zasób
     @DeleteMapping("/{email}")
     public void removePatient(@PathVariable String email) {
