@@ -1,4 +1,4 @@
-package com.dawkastresu.medical_clinic;
+package com.dawkastresu.medicalclinic;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

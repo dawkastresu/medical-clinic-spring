@@ -1,4 +1,4 @@
-package com.dawkastresu.medical_clinic;
+package com.dawkastresu.medicalclinic;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,24 +25,14 @@ public class PatientService {
         if (!Objects.equals(newPatient.getIdCardNo(), patient.getIdCardNo())){
             throw new IllegalArgumentException("IdCardNo is different. You can't edit ID card number");
         }
-        if (newPatient.getEmail() != null){
+
         patient.setEmail(newPatient.getEmail());
-        }
-        if (newPatient.getPassword() != null) {
-            patient.setPassword(newPatient.getPassword());
-        }
-        if (newPatient.getFirstName() != null) {
-            patient.setFirstName(newPatient.getFirstName());
-        }
-        if (newPatient.getLastName() != null) {
-            patient.setLastName(newPatient.getLastName());
-        }
-        if (newPatient.getPhoneNumber() != null) {
-            patient.setPhoneNumber(newPatient.getPhoneNumber());
-        }
-        if (newPatient.getBirthday() != null) {
-            patient.setBirthday(newPatient.getBirthday());
-        }
+        patient.setPassword(newPatient.getPassword());
+        patient.setFirstName(newPatient.getFirstName());
+        patient.setLastName(newPatient.getLastName());
+        patient.setPhoneNumber(newPatient.getPhoneNumber());
+        patient.setBirthday(newPatient.getBirthday());
+
     }
 
     public List<Patient> getAll() {
