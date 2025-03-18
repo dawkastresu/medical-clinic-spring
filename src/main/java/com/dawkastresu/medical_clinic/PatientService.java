@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
+
 //ReauiredArgsConstruktor generuje konstruktor który przyjmuje pola finalne
 @RequiredArgsConstructor
 //Adnotacja Service mówi że ta klasa jest beanem zawierajacym logike biznesową aplikacji
@@ -12,34 +14,53 @@ public class PatientService {
     //PatientRepository również musi być beanem aby Spring mógł dostarczyć instancję tej klasy
     private final PatientRepository patientRepository;
 
-    public void editPatientByEmail(String email, Patient newPatient) {
-        Patient patient = patientRepository.findPatientByEmail(email)
+    public void editByEmail(String email, Patient newPatient) {
+        if (newPatient.getFirstName() == null || newPatient.getLastName() == null || newPatient.getPhoneNumber() == null || newPatient.getPassword() == null || newPatient.getBirthday() == null) {
+            return;
+        }
+        PatientValidator.validatePatient(newPatient, patientRepository);
+        Patient patient = patientRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("Patient not found"));
 
+        if (!Objects.equals(newPatient.getIdCardNo(), patient.getIdCardNo())){
+            throw new IllegalArgumentException("IdCardNo is different. You can't edit ID card number");
+        }
+        if (newPatient.getEmail() != null){
         patient.setEmail(newPatient.getEmail());
-        patient.setPassword(newPatient.getPassword());
-        patient.setIdCardNo(newPatient.getIdCardNo());
-        patient.setFirstName(newPatient.getFirstName());
-        patient.setLastName(newPatient.getLastName());
-        patient.setPhoneNumber(newPatient.getPhoneNumber());
-        patient.setBirthday(newPatient.getBirthday());
+        }
+        if (newPatient.getPassword() != null) {
+            patient.setPassword(newPatient.getPassword());
+        }
+        if (newPatient.getFirstName() != null) {
+            patient.setFirstName(newPatient.getFirstName());
+        }
+        if (newPatient.getLastName() != null) {
+            patient.setLastName(newPatient.getLastName());
+        }
+        if (newPatient.getPhoneNumber() != null) {
+            patient.setPhoneNumber(newPatient.getPhoneNumber());
+        }
+        if (newPatient.getBirthday() != null) {
+            patient.setBirthday(newPatient.getBirthday());
+        }
     }
 
-    public List<Patient> getAllPatients() {
+    public List<Patient> getAll() {
         return patientRepository.findAll();
     }
 
     public Patient findPatientByName(String email) {
-        return patientRepository.findPatientByEmail(email)
+        return patientRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("Patient not found"));
     }
 
-    public void addNewPatient(Patient patient) {
-        patientRepository.addPatient(patient);
+    public void addNew(Patient patient) {
+        PatientValidator.validatePatient(patient, patientRepository);
+        patientRepository.add(patient);
     }
 
-    public void removePatientByMail(String email) {
-        patientRepository.removePatientByEmail(email);
+    public void removeByMail(String email) {
+        patientRepository.removeByEmail(email);
     }
 
 }

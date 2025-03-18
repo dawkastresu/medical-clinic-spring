@@ -17,7 +17,7 @@ public class PatientController {
 //pusta adnotacja GetMapping oznacza endpoint /patients, w którym obslugiwana jest metoda GET, czyli zwrócenie zasobu
     @GetMapping
     public List<Patient> getAllPatients() {
-        return patientService.getAllPatients();
+        return patientService.getAll();
     }
 //GetMapping/email oznacza endpoint /patient/email gdzie email jest zmienną ścieżkową oraz obslugiwana jest metoda HTTP GET, czyli zwrócenie zasobu
     @GetMapping("/{email}")
@@ -29,7 +29,7 @@ public class PatientController {
 //PostMapping określa enpoint /patients dla metody http POST - czyli dodanie nowego zasobu
     @PostMapping
     public Patient addNewPatient(@RequestBody Patient patient) {
-        patientService.addNewPatient(patient);
+        patientService.addNew(patient);
         return patient;
     }
 //ResponseStatus okresla status zwracany w odpowiedzi http - 204 NO CONTENT
@@ -37,11 +37,11 @@ public class PatientController {
 //DeleteMapping/email okresla endpoint /patients/email, gdzie email to zmienna ścieżkowa, obsluguje zapytania HTTP DELETE, całkowicie usuwa zasób
     @DeleteMapping("/{email}")
     public void removePatient(@PathVariable String email) {
-        patientService.removePatientByMail(email);
+        patientService.removeByMail(email);
     }
 //PutMapping/email okresla endpoint /patients/email gdzie email to zmienna sciezkowa, obsluguje zapytania HTTP PUT, czyli całkowitą edycje zasobu
     @PutMapping("/{email}")
     public void editPatientByMail(@PathVariable String email, @RequestBody Patient patient) {
-        patientService.editPatientByEmail(email, patient);
+        patientService.editByEmail(email, patient);
     }
 }
