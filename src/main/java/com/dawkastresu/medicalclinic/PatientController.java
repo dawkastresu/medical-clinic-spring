@@ -44,4 +44,9 @@ public class PatientController {
     public void editPatientByMail(@PathVariable String email, @RequestBody Patient patient) {
         patientService.editByEmail(email, patient);
     }
+//PatchMapping/email/password okresla endpoint dla zapytania PATCH, czyli czesciowej edycji zasobu
+    @PatchMapping("/{email}/password")
+    public void editPasswordByMail(@PathVariable String email, @RequestBody String password) {
+        patientService.editPasswordByMail(email, password);
+    }
 }

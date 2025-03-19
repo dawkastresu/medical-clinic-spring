@@ -16,7 +16,7 @@ public class PatientService {
 
     public void editByEmail(String email, Patient newPatient) {
         if (newPatient.getFirstName() == null || newPatient.getLastName() == null || newPatient.getPhoneNumber() == null || newPatient.getPassword() == null || newPatient.getBirthday() == null) {
-            return;
+            throw new IllegalArgumentException("You cannot change any patient data value to null.");
         }
         PatientValidator.validatePatient(newPatient, patientRepository);
         Patient patient = patientRepository.findByEmail(email)
@@ -33,6 +33,14 @@ public class PatientService {
         patient.setPhoneNumber(newPatient.getPhoneNumber());
         patient.setBirthday(newPatient.getBirthday());
 
+    }
+
+    public void editPasswordByMail(String email, String password) {
+
+        Patient patient = patientRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("Patient not found"));
+
+        patient.setPassword(password);
     }
 
     public List<Patient> getAll() {
