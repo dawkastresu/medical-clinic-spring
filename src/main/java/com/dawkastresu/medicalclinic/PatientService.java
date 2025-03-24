@@ -15,16 +15,12 @@ public class PatientService {
     private final PatientRepository patientRepository;
 
     public void editByEmail(String email, Patient newPatient) {
-        if (newPatient.getFirstName() == null || newPatient.getLastName() == null || newPatient.getPhoneNumber() == null || newPatient.getPassword() == null || newPatient.getBirthday() == null) {
-            throw new IllegalArgumentException("You cannot change any patient data value to null.");
-        }
+        PatientValidator.newValueNotNullValidate(newPatient);
         PatientValidator.validatePatient(newPatient, patientRepository);
         Patient patient = patientRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("Patient not found"));
 
-        if (!Objects.equals(newPatient.getIdCardNo(), patient.getIdCardNo())){
-            throw new IllegalArgumentException("IdCardNo is different. You can't edit ID card number");
-        }
+        PatientValidator.cardIdNrNotChangedValidate(patient, newPatient);
 
         patient.setEmail(newPatient.getEmail());
         patient.setPassword(newPatient.getPassword());
@@ -32,15 +28,12 @@ public class PatientService {
         patient.setLastName(newPatient.getLastName());
         patient.setPhoneNumber(newPatient.getPhoneNumber());
         patient.setBirthday(newPatient.getBirthday());
-
     }
 
-    public void editPasswordByMail(String email, String password) {
-
+    public void editPasswordByMail(String email, PatientPassword password) {
         Patient patient = patientRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("Patient not found"));
-
-        patient.setPassword(password);
+        patient.setPassword(password.getPassword());
     }
 
     public List<Patient> getAll() {
