@@ -1,6 +1,7 @@
 package com.dawkastresu.medicalclinic;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,9 +17,9 @@ public class PatientService {
 
     public void editByEmail(String email, Patient newPatient) {
         PatientValidator.newValueNotNullValidate(newPatient);
-        PatientValidator.validatePatient(newPatient, patientRepository);
+        PatientValidator.validatePatientEdit(newPatient);
         Patient patient = patientRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("Patient not found"));
+                .orElseThrow(() -> new PatientNotFoundException("Patient not found", HttpStatus.NOT_FOUND));
 
         PatientValidator.cardIdNrNotChangedValidate(patient, newPatient);
 
@@ -32,7 +33,7 @@ public class PatientService {
 
     public void editPasswordByMail(String email, PatientPassword password) {
         Patient patient = patientRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("Patient not found"));
+                .orElseThrow(() -> new PatientNotFoundException("Patient not found", HttpStatus.NOT_FOUND));
         patient.setPassword(password.getPassword());
     }
 
@@ -42,7 +43,7 @@ public class PatientService {
 
     public Patient findPatientByName(String email) {
         return patientRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("Patient not found"));
+                .orElseThrow(() -> new PatientNotFoundException("Patient not found", HttpStatus.NOT_FOUND));
     }
 
     public void addNew(Patient patient) {
