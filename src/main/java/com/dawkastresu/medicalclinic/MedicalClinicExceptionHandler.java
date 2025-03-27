@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class MedicalClinicExceptionHandler {
 
     @ExceptionHandler(PatientNotFoundException.class)
-    protected ResponseEntity<Object> handlePatientNotFoundException(PatientNotFoundException ex) {
-        return new ResponseEntity<>(ex.getMessage(), new HttpHeaders(), ex.getHttpStatus());
+    protected ResponseEntity<ErrorMessage> handlePatientNotFoundException(PatientNotFoundException ex) {
+        return new ResponseEntity<>(new ErrorMessage(HttpStatus.BAD_REQUEST, ex.getMessage()), new HttpHeaders(), ex.getHttpStatus());
     }
 
     @ExceptionHandler(InvalidPatientDataException.class)
-    protected ResponseEntity<Object> handleInvalidPatientDataException(InvalidPatientDataException ex) {
-        return new ResponseEntity<>(ex.getMessage(), new HttpHeaders(), ex.getHttpStatus());
+    protected ResponseEntity<ErrorMessage> handleInvalidPatientDataException(InvalidPatientDataException ex) {
+        return new ResponseEntity<>(new ErrorMessage(HttpStatus.BAD_REQUEST, ex.getMessage()), new HttpHeaders(), ex.getHttpStatus());
     }
 
 }
