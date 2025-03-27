@@ -16,12 +16,12 @@ public class PatientController {
     private final PatientService patientService;
 //pusta adnotacja GetMapping oznacza endpoint /patients, w którym obslugiwana jest metoda GET, czyli zwrócenie zasobu
     @GetMapping
-    public List<Patient> getAllPatients() {
+    public List<PatientDto> getAllPatients() {
         return patientService.getAll();
     }
 //GetMapping/email oznacza endpoint /patient/email gdzie email jest zmienną ścieżkową oraz obslugiwana jest metoda HTTP GET, czyli zwrócenie zasobu
     @GetMapping("/{email}")
-    public Patient getPatientByMail(@PathVariable String email) {
+    public PatientDto getPatientByMail(@PathVariable String email) {
         return patientService.findPatientByName(email);
     }
 //ResponseStatus okresla status zwracany w odpowiedzi http - 201 CREATED

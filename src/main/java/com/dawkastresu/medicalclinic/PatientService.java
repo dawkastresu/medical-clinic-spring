@@ -37,22 +37,36 @@ public class PatientService {
         patient.setPassword(password.getPassword());
     }
 
-    public List<Patient> getAll() {
-        return patientRepository.findAll();
+    public List<PatientDto> getAll() {
+        return patientRepository.findAll().stream()
+                .map(this::mapToDto)
+                .toList();
     }
 
-    public Patient findPatientByName(String email) {
+    public PatientDto findPatientByName(String email) {
         return patientRepository.findByEmail(email)
+                .map(this::mapToDto)
                 .orElseThrow(() -> new PatientNotFoundException("Patient not found", HttpStatus.NOT_FOUND));
     }
 
-    public void addNew(Patient patient) {
+    public PatientDto addNew(Patient patient) {
         PatientValidator.validatePatient(patient, patientRepository);
         patientRepository.add(patient);
+        return mapToDto(patient);
     }
 
     public void removeByMail(String email) {
         patientRepository.removeByEmail(email);
+    }
+
+    private PatientDto mapToDto(Patient patient) {
+        return new PatientDto(
+                patient.getEmail(),
+                patient.getFirstName(),
+                patient.getLastName(),
+                patient.getPhoneNumber(),
+                patient.getBirthday()
+        );
     }
 
 }
