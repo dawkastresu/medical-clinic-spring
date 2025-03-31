@@ -13,18 +13,18 @@ public class InstitutionController {
     private final InstitutionService service;
 
     @GetMapping
-    public List<Institution> getAll(){
+    public List<InstitutionDto> getAll(){
         return service.getAll();
     }
 
     @PostMapping
-    public Institution addNew(@RequestBody Institution institution) {
-        service.addNew(institution);
-        return institution;
+    public InstitutionDto addNew(@RequestBody CreateInstitutionCommand createInstitutionCommand) {
+        return service.addNew(createInstitutionCommand);
     }
 
     @DeleteMapping("/{name}")
     public void remove(@PathVariable String name) {
         service.remove(name);
     }
+
 }

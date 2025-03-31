@@ -1,17 +1,15 @@
 package com.dawkastresu.medicalclinic;
 
+import lombok.Data;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
 
+@Data
 public class ErrorMessage {
-    private String message;
-    private HttpStatus httpStatus;
-    private LocalDateTime occuredAt;
 
-    public ErrorMessage(HttpStatus httpStatus, String message) {
-        this.httpStatus = httpStatus;
-        this.message = message;
-        this.occuredAt = LocalDateTime.now();
-    }
+    private final String message;
+    private final HttpStatus httpStatus;
+    private final LocalDateTime occuredAt = LocalDateTime.now();
+
 }

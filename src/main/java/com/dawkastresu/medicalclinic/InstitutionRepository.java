@@ -10,6 +10,7 @@ import java.util.Optional;
 @Repository
 @RequiredArgsConstructor
 public class InstitutionRepository {
+
     private final List<Institution> institutions;
 
     public List<Institution> findAll() {
@@ -29,4 +30,5 @@ public class InstitutionRepository {
                 .filter(institution -> name.equalsIgnoreCase(institution.getName()))
                 .findFirst();
     }
+
 }

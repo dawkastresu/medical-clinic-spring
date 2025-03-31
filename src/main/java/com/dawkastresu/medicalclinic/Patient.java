@@ -1,11 +1,14 @@
 package com.dawkastresu.medicalclinic;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDate;
 //Adnotacja Data pozwala wygenerować potrzebne boilerplate'y - Konstruktory, Gettery, Settery, Equals hash code oraz toString.
 @Data
+@AllArgsConstructor
 public class Patient {
+
     private String email;
     private String password;
     private String idCardNo;
@@ -13,4 +16,5 @@ public class Patient {
     private String lastName;
     private String phoneNumber;
     private LocalDate birthday;
+
 }

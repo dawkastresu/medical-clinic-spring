@@ -14,9 +14,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY;
 @RequiredArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @JsonAutoDetect(fieldVisibility = ANY)
-public class PatientDto {
+public class CreatePatientCommand {
 
     String email;
+    String password;
+    String idCardNo;
     String firstName;
     String lastName;
     String phoneNumber;

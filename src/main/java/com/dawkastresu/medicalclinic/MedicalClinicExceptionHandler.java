@@ -11,12 +11,12 @@ public class MedicalClinicExceptionHandler {
 
     @ExceptionHandler(PatientNotFoundException.class)
     protected ResponseEntity<ErrorMessage> handlePatientNotFoundException(PatientNotFoundException ex) {
-        return new ResponseEntity<>(new ErrorMessage(HttpStatus.BAD_REQUEST, ex.getMessage()), new HttpHeaders(), ex.getHttpStatus());
+        return new ResponseEntity<>(new ErrorMessage(ex.getMessage(), ex.getHttpStatus()), new HttpHeaders(), ex.getHttpStatus());
     }
 
     @ExceptionHandler(InvalidPatientDataException.class)
     protected ResponseEntity<ErrorMessage> handleInvalidPatientDataException(InvalidPatientDataException ex) {
-        return new ResponseEntity<>(new ErrorMessage(HttpStatus.BAD_REQUEST, ex.getMessage()), new HttpHeaders(), ex.getHttpStatus());
+        return new ResponseEntity<>(new ErrorMessage(ex.getMessage(), ex.getHttpStatus()), new HttpHeaders(), ex.getHttpStatus());
     }
 
 }

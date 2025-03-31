@@ -15,7 +15,8 @@ public class PatientService {
     //PatientRepository również musi być beanem aby Spring mógł dostarczyć instancję tej klasy
     private final PatientRepository patientRepository;
 
-    public void editByEmail(String email, Patient newPatient) {
+    public PatientDto editByEmail(String email, CreatePatientCommand createPatientCommand) {
+        Patient newPatient = PatientMapper.mapToPatient(createPatientCommand);
         PatientValidator.newValueNotNullValidate(newPatient);
         PatientValidator.validatePatientEdit(newPatient);
         Patient patient = patientRepository.findByEmail(email)
@@ -29,6 +30,8 @@ public class PatientService {
         patient.setLastName(newPatient.getLastName());
         patient.setPhoneNumber(newPatient.getPhoneNumber());
         patient.setBirthday(newPatient.getBirthday());
+
+        return PatientMapper.mapToDto(newPatient);
     }
 
     public void editPasswordByMail(String email, PatientPassword password) {
@@ -39,34 +42,25 @@ public class PatientService {
 
     public List<PatientDto> getAll() {
         return patientRepository.findAll().stream()
-                .map(this::mapToDto)
+                .map(PatientMapper::mapToDto)
                 .toList();
     }
 
     public PatientDto findPatientByName(String email) {
         return patientRepository.findByEmail(email)
-                .map(this::mapToDto)
+                .map(PatientMapper::mapToDto)
                 .orElseThrow(() -> new PatientNotFoundException("Patient not found", HttpStatus.NOT_FOUND));
     }
 
-    public PatientDto addNew(Patient patient) {
+    public Patient addNew(CreatePatientCommand createPatientCommand) {
+        Patient patient = PatientMapper.mapToPatient(createPatientCommand);
         PatientValidator.validatePatient(patient, patientRepository);
         patientRepository.add(patient);
-        return mapToDto(patient);
+        return patient;
     }
 
     public void removeByMail(String email) {
         patientRepository.removeByEmail(email);
-    }
-
-    private PatientDto mapToDto(Patient patient) {
-        return new PatientDto(
-                patient.getEmail(),
-                patient.getFirstName(),
-                patient.getLastName(),
-                patient.getPhoneNumber(),
-                patient.getBirthday()
-        );
     }
 
 }

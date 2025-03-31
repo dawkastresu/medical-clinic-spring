@@ -13,4 +13,5 @@ public final class InstitutionValidator {
         return institutions.stream()
                 .anyMatch(institution -> name.equalsIgnoreCase(institution.getName()));
     }
+
 }

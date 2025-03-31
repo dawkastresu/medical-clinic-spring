@@ -11,17 +11,22 @@ public class InstitutionService {
 
     private final InstitutionRepository repository;
 
-    public List<Institution> getAll(){
-        return repository.findAll();
+    public List<InstitutionDto> getAll(){
+        return repository.findAll().stream()
+                .map(InstitutionMapper::maptoDto)
+                .toList();
     }
 
-    public void addNew(Institution institution) {
+    public InstitutionDto addNew(CreateInstitutionCommand createInstitutionCommand) {
+        Institution institution = InstitutionMapper.mapToInstitution(createInstitutionCommand);
         if (InstitutionValidator.validateInstitution(repository, institution.getName())) {
             repository.add(institution);
         }
+        return InstitutionMapper.maptoDto(institution);
     }
 
     public void remove(String name){
         repository.remove(name);
     }
+
 }
