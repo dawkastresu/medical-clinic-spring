@@ -21,5 +21,6 @@ public class PatientDto {
     String lastName;
     String phoneNumber;
     LocalDate birthday;
+    String fullName;
 
 }

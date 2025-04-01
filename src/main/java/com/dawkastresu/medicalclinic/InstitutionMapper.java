@@ -9,6 +9,3 @@ public interface InstitutionMapper {
     InstitutionDto toDto(Institution institution);
 
 }
-
-
-

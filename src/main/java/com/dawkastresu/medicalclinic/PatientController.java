@@ -30,7 +30,6 @@ public class PatientController {
     @PostMapping
     public PatientDto addNewPatient(@RequestBody CreatePatientCommand createPatientCommand) {
         return patientService.addNew(createPatientCommand);
-
     }
 //ResponseStatus okresla status zwracany w odpowiedzi http - 204 NO CONTENT
     @ResponseStatus(HttpStatus.NO_CONTENT)
