@@ -28,9 +28,9 @@ public class PatientController {
     @ResponseStatus(HttpStatus.CREATED)
 //PostMapping określa enpoint /patients dla metody http POST - czyli dodanie nowego zasobu
     @PostMapping
-    public CreatePatientCommand addNewPatient(@RequestBody CreatePatientCommand createPatientCommand) {
-        patientService.addNew(createPatientCommand);
-        return createPatientCommand;
+    public PatientDto addNewPatient(@RequestBody CreatePatientCommand createPatientCommand) {
+        return patientService.addNew(createPatientCommand);
+
     }
 //ResponseStatus okresla status zwracany w odpowiedzi http - 204 NO CONTENT
     @ResponseStatus(HttpStatus.NO_CONTENT)

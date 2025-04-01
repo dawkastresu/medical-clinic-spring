@@ -10,19 +10,20 @@ import java.util.List;
 public class InstitutionService {
 
     private final InstitutionRepository repository;
+    private final InstitutionMapper mapper;
 
-    public List<InstitutionDto> getAll(){
+    public List<InstitutionDto> getAll() {
         return repository.findAll().stream()
-                .map(InstitutionMapper::maptoDto)
+                .map(mapper::toDto)
                 .toList();
     }
 
     public InstitutionDto addNew(CreateInstitutionCommand createInstitutionCommand) {
-        Institution institution = InstitutionMapper.mapToInstitution(createInstitutionCommand);
+        Institution institution = mapper.toEntity(createInstitutionCommand);
         if (InstitutionValidator.validateInstitution(repository, institution.getName())) {
             repository.add(institution);
         }
-        return InstitutionMapper.maptoDto(institution);
+        return mapper.toDto(institution);
     }
 
     public void remove(String name){

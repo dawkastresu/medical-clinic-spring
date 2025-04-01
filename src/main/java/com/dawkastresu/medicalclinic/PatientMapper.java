@@ -1,27 +1,11 @@
 package com.dawkastresu.medicalclinic;
 
-public final class PatientMapper {
+import org.mapstruct.Mapper;
 
-    public static PatientDto mapToDto(Patient patient) {
-        return new PatientDto(
-                patient.getEmail(),
-                patient.getFirstName(),
-                patient.getLastName(),
-                patient.getPhoneNumber(),
-                patient.getBirthday()
-        );
-    }
+@Mapper(componentModel = "spring")
+public interface PatientMapper {
 
-    public static Patient mapToPatient(CreatePatientCommand createPatientCommand) {
-        return new Patient(
-                createPatientCommand.getEmail(),
-                createPatientCommand.getPassword(),
-                createPatientCommand.getIdCardNo(),
-                createPatientCommand.getFirstName(),
-                createPatientCommand.getLastName(),
-                createPatientCommand.getPhoneNumber(),
-                createPatientCommand.getBirthday()
-        );
-    }
+    Patient toEntity(CreatePatientCommand patientCommand);
+    PatientDto toDto(Patient patient);
 
 }

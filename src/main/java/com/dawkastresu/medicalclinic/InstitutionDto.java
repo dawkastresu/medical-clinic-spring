@@ -2,6 +2,7 @@ package com.dawkastresu.medicalclinic;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
