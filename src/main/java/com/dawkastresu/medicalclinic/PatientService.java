@@ -1,9 +1,11 @@
-package com.dawkastresu.medical_clinic;
+package com.dawkastresu.medicalclinic;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
+
 //ReauiredArgsConstruktor generuje konstruktor który przyjmuje pola finalne
 @RequiredArgsConstructor
 //Adnotacja Service mówi że ta klasa jest beanem zawierajacym logike biznesową aplikacji
@@ -12,34 +14,44 @@ public class PatientService {
     //PatientRepository również musi być beanem aby Spring mógł dostarczyć instancję tej klasy
     private final PatientRepository patientRepository;
 
-    public void editPatientByEmail(String email, Patient newPatient) {
-        Patient patient = patientRepository.findPatientByEmail(email)
+    public void editByEmail(String email, Patient newPatient) {
+        PatientValidator.newValueNotNullValidate(newPatient);
+        PatientValidator.validatePatient(newPatient, patientRepository);
+        Patient patient = patientRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("Patient not found"));
+
+        PatientValidator.cardIdNrNotChangedValidate(patient, newPatient);
 
         patient.setEmail(newPatient.getEmail());
         patient.setPassword(newPatient.getPassword());
-        patient.setIdCardNo(newPatient.getIdCardNo());
         patient.setFirstName(newPatient.getFirstName());
         patient.setLastName(newPatient.getLastName());
         patient.setPhoneNumber(newPatient.getPhoneNumber());
         patient.setBirthday(newPatient.getBirthday());
     }
 
-    public List<Patient> getAllPatients() {
+    public void editPasswordByMail(String email, PatientPassword password) {
+        Patient patient = patientRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("Patient not found"));
+        patient.setPassword(password.getPassword());
+    }
+
+    public List<Patient> getAll() {
         return patientRepository.findAll();
     }
 
     public Patient findPatientByName(String email) {
-        return patientRepository.findPatientByEmail(email)
+        return patientRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("Patient not found"));
     }
 
-    public void addNewPatient(Patient patient) {
-        patientRepository.addPatient(patient);
+    public void addNew(Patient patient) {
+        PatientValidator.validatePatient(patient, patientRepository);
+        patientRepository.add(patient);
     }
 
-    public void removePatientByMail(String email) {
-        patientRepository.removePatientByEmail(email);
+    public void removeByMail(String email) {
+        patientRepository.removeByEmail(email);
     }
 
 }

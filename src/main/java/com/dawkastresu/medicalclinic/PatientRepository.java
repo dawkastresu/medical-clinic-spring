@@ -1,4 +1,4 @@
-package com.dawkastresu.medical_clinic;
+package com.dawkastresu.medicalclinic;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -18,17 +18,17 @@ public class PatientRepository {
         return new ArrayList<>(patients);
     }
 
-    public Optional<Patient> findPatientByEmail(String email){
+    public Optional<Patient> findByEmail(String email){
         return patients.stream()
                 .filter(patient -> patient.getEmail().equalsIgnoreCase(email))
                 .findFirst();
     }
 
-    public void addPatient(Patient patient) {
+    public void add(Patient patient) {
         patients.add(patient);
     }
 
-    public void removePatientByEmail(String email) {
+    public void removeByEmail(String email) {
         patients.removeIf(patient -> patient.getEmail().equalsIgnoreCase(email));
     }
 
