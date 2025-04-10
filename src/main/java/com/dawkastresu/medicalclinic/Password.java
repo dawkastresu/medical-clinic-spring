@@ -3,7 +3,7 @@ package com.dawkastresu.medicalclinic;
 import lombok.Data;
 
 @Data
-public class PatientPassword {
+public class Password {
 
     private String password;
 

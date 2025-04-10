@@ -28,8 +28,8 @@ public class PatientController {
     @ResponseStatus(HttpStatus.CREATED)
 //PostMapping określa enpoint /patients dla metody http POST - czyli dodanie nowego zasobu
     @PostMapping
-    public PatientDto addNewPatient(@RequestBody CreatePatientCommand createPatientCommand) {
-        return patientService.addNew(createPatientCommand);
+    public PatientDto registerPatient(@RequestBody RegisterPatientCommand command) {
+        return patientService.addNew(command);
     }
 //ResponseStatus okresla status zwracany w odpowiedzi http - 204 NO CONTENT
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -43,9 +43,6 @@ public class PatientController {
     public PatientDto editPatientByMail(@PathVariable String email, @RequestBody CreatePatientCommand createPatientCommand) {
         return patientService.editByEmail(email, createPatientCommand);
     }
-//PatchMapping/email/password okresla endpoint dla zapytania PATCH, czyli czesciowej edycji zasobu
-    @PatchMapping("/{email}/password")
-    public void editPasswordByMail(@PathVariable String email, @RequestBody PatientPassword password) {
-        patientService.editPasswordByMail(email, password);
-    }
+
+
 }

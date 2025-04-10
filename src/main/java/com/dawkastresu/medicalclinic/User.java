@@ -4,18 +4,19 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
-@Table(name="INSTITUTIONS")
+@Table(name="USERS")
 @Data
-public class Institution {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String username;
 
-    private String postalCode;
+    private String password;
 
-    private String adress;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Patient patient;
 
 }

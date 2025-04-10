@@ -1,25 +1,23 @@
 package com.dawkastresu.medicalclinic;
 
-import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import lombok.experimental.FieldDefaults;
-import lombok.RequiredArgsConstructor;
-import java.time.LocalDate;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY;
 
 @Getter
 @RequiredArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @JsonAutoDetect(fieldVisibility = ANY)
-public class CreatePatientCommand {
+public class DoctorDto {
 
+    Long id;
     String email;
-    String password;
-    String idCardNo;
     String firstName;
     String lastName;
-    String phoneNumber;
-    LocalDate birthday;
+    Specialization specialization;
 
 }

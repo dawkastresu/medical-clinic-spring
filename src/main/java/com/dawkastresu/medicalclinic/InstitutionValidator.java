@@ -11,7 +11,7 @@ public final class InstitutionValidator {
     public static boolean validateInstitution(InstitutionRepository repository, String name){
         List<Institution> institutions = repository.findAll();
         return institutions.stream()
-                .anyMatch(institution -> name.equalsIgnoreCase(institution.getName()));
+                .noneMatch(institution -> name.equalsIgnoreCase(institution.getName()));
     }
 
 }

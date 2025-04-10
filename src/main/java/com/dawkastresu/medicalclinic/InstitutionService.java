@@ -21,13 +21,13 @@ public class InstitutionService {
     public InstitutionDto addNew(CreateInstitutionCommand createInstitutionCommand) {
         Institution institution = mapper.toEntity(createInstitutionCommand);
         if (InstitutionValidator.validateInstitution(repository, institution.getName())) {
-            repository.add(institution);
+            repository.save(institution);
         }
         return mapper.toDto(institution);
     }
 
     public void remove(String name){
-        repository.remove(name);
+        repository.deleteByName(name);
     }
 
 }

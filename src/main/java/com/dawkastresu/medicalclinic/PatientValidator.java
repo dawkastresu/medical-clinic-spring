@@ -32,7 +32,7 @@ public final class PatientValidator {
     }
 
     public static void newValueNotNullValidate(Patient newPatient){
-        if (newPatient.getFirstName() == null || newPatient.getLastName() == null || newPatient.getPhoneNumber() == null || newPatient.getPassword() == null || newPatient.getBirthday() == null) {
+        if (newPatient.getFirstName() == null || newPatient.getLastName() == null || newPatient.getPhoneNumber() == null || newPatient.getBirthday() == null) {
             throw new InvalidPatientDataException("You cannot change any patient data value to null.", HttpStatus.BAD_REQUEST);
         }
     }

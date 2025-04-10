@@ -2,11 +2,11 @@ package com.dawkastresu.medicalclinic;
 
 import org.springframework.http.HttpStatus;
 
-public class InvalidPatientDataException extends MedicalClinicException{
+public class InvalidDoctorDataException extends MedicalClinicException {
 
     private HttpStatus httpStatus;
 
-    public InvalidPatientDataException(String message, HttpStatus httpStatus) {
+    public InvalidDoctorDataException(String message, HttpStatus httpStatus) {
         super(message, httpStatus);
     }
 

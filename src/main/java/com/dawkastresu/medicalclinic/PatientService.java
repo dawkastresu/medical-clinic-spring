@@ -25,14 +25,9 @@ public class PatientService {
         PatientValidator.cardIdNrNotChangedValidate(patient, newPatient);
 
         patient.update(newPatient);
+        patientRepository.save(patient);
 
         return mapper.toDto(newPatient);
-    }
-
-    public void editPasswordByMail(String email, PatientPassword password) {
-        Patient patient = patientRepository.findByEmail(email)
-                .orElseThrow(() -> new PatientNotFoundException("Patient not found", HttpStatus.NOT_FOUND));
-        patient.setPassword(password.getPassword());
     }
 
     public List<PatientDto> getAll() {
@@ -47,15 +42,15 @@ public class PatientService {
                 .orElseThrow(() -> new PatientNotFoundException("Patient not found", HttpStatus.NOT_FOUND));
     }
 
-    public PatientDto addNew(CreatePatientCommand createPatientCommand) {
-        Patient patient = mapper.toEntity(createPatientCommand);
+    public PatientDto addNew(RegisterPatientCommand command) {
+        Patient patient = Patient.create(command);
         PatientValidator.validatePatient(patient, patientRepository);
-        patientRepository.add(patient);
+        patientRepository.save(patient);
         return mapper.toDto(patient);
     }
 
     public void removeByMail(String email) {
-        patientRepository.removeByEmail(email);
+        patientRepository.deleteByEmail(email);
     }
 
 }
