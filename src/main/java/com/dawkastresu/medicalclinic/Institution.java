@@ -22,8 +22,8 @@ public class Institution {
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "Doctor_Institution",
-            joinColumns = { @JoinColumn(name = "doctor_id") },
-            inverseJoinColumns = { @JoinColumn(name = "institution_id")})
+            joinColumns = { @JoinColumn(name = "institution_id") },
+            inverseJoinColumns = { @JoinColumn(name = "doctor_id")})
     private List<Doctor> doctors;
 
 }
