@@ -22,10 +22,10 @@ public class Doctor {
 
     private String lastName;
 
+    @Enumerated(value = EnumType.STRING)
     private Specialization specialization;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "institution_id", referencedColumnName = "id")
+    @ManyToMany(mappedBy = "doctors")
     private List<Institution> institutions;
 
     public void update(Doctor doctor) {
@@ -46,6 +46,7 @@ public class Doctor {
             doctor.setEmail(command.getEmail());
             doctor.setSpecialization(command.getSpecialization());
             doctor.setInstitutions(List.of(institution));
+            return doctor;
     }
 
 }
