@@ -18,4 +18,7 @@ public class Institution {
 
     private String adress;
 
+    @ManyToMany(mappedBy = "joinedInstitutions")
+    private Doctor doctor;
+
 }

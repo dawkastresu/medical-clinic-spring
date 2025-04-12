@@ -25,7 +25,7 @@ public class DoctorController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public DoctorDto addNewDoctor(@RequestBody CreateDoctorCommand command) {
+    public DoctorDto addNewDoctor(@RequestBody RegisterDoctorCommand command) {
         return service.addNew(command);
     }
 
@@ -35,7 +35,8 @@ public class DoctorController {
         service.remove(id);
     }
 
-//    public DoctorDto editDoctorById(@PathVariable Long id, @RequestBody CreateDoctorCommand command) {
-//        return service.
-//    }
+    @PutMapping("/{id}")
+    public DoctorDto editDoctorById(@PathVariable Long id, @RequestBody CreateDoctorCommand command) {
+        return service.editById(id, command);
+    }
 }

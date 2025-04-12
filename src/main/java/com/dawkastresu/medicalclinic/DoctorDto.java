@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY;
 
 @Getter
@@ -19,5 +21,7 @@ public class DoctorDto {
     String firstName;
     String lastName;
     Specialization specialization;
+
+    List<Institution> institutions;
 
 }

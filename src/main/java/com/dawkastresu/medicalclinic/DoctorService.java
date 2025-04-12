@@ -19,8 +19,8 @@ public class DoctorService {
                 .toList();
     }
 
-    public DoctorDto addNew(CreateDoctorCommand command) {
-        Doctor doctor = mapper.toEntity(command);
+    public DoctorDto addNew(RegisterDoctorCommand command) {
+        Doctor doctor = Doctor.create(command);
         if (DoctorValidator.validateDoctor(repository, doctor.getFirstName())) {
             repository.save(doctor);
         }
@@ -48,6 +48,11 @@ public class DoctorService {
         repository.save(doctor);
 
         return mapper.toDto(newDoctor);
+    }
+
+    public void editPasswordById(Long id, Password password) {
+        Doctor doctor = repository.findById(id).orElseThrow(() -> new DoctorNotFoundException("Doctor not found", HttpStatus.NOT_FOUND));
+        doctor.setPassword(password.getPassword());
     }
 
 }
