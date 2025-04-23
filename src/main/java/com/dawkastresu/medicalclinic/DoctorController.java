@@ -36,7 +36,13 @@ public class DoctorController {
     }
 
     @PutMapping("/{id}")
-    public DoctorDto editDoctorById(@PathVariable Long id, @RequestBody CreateDoctorCommand command) {
+    public DoctorDto editDoctorById(@PathVariable Long id, @RequestBody RegisterDoctorCommand command) {
         return service.editById(id, command);
     }
+
+    @PatchMapping("/{id}")
+    public void addToInstitution(@PathVariable Long idDoctor, @RequestBody Long idInstitution) {
+        service.addDoctorToInstitution(idDoctor, idInstitution);
+    }
+
 }

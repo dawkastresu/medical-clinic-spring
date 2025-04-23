@@ -1,13 +1,17 @@
 package com.dawkastresu.medicalclinic;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name="DOCTORS")
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Doctor {
 
     @Id
@@ -22,10 +26,16 @@ public class Doctor {
 
     private String lastName;
 
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
+    private List<Appointment> appointment;
+
     @Enumerated(value = EnumType.STRING)
     private Specialization specialization;
 
-    @ManyToMany(mappedBy = "doctors")
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "Doctor_Institution",
+            joinColumns = { @JoinColumn(name = "institution_id") },
+            inverseJoinColumns = { @JoinColumn(name = "doctor_id")})
     private List<Institution> institutions;
 
     public void update(Doctor doctor) {
@@ -42,11 +52,41 @@ public class Doctor {
             institution.setPostalCode(command.getPostalCode());
         Doctor doctor = new Doctor();
             doctor.setFirstName(command.getFirstName());
+            doctor.setPassword(doctor.getPassword());
             doctor.setLastName(command.getLastName());
             doctor.setEmail(command.getEmail());
             doctor.setSpecialization(command.getSpecialization());
             doctor.setInstitutions(List.of(institution));
             return doctor;
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (!(o instanceof Doctor))
+            return false;
+
+        Doctor other = (Doctor) o;
+
+        return id != null &&
+                id.equals(other.getId());
+    }
+
+    @Override
+    public String toString() {
+        return "Doctor{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", specialization=" + specialization +
+                '}';
     }
 
 }

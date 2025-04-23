@@ -1,13 +1,16 @@
 package com.dawkastresu.medicalclinic;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
 @Table(name="INSTITUTIONS")
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Institution {
 
     @Id
@@ -20,10 +23,35 @@ public class Institution {
 
     private String adress;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "Doctor_Institution",
-            joinColumns = { @JoinColumn(name = "institution_id") },
-            inverseJoinColumns = { @JoinColumn(name = "doctor_id")})
+    @ManyToMany(mappedBy = "institutions")
     private List<Doctor> doctors;
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (!(o instanceof Institution))
+            return false;
+
+        Institution other = (Institution) o;
+
+        return id != null &&
+                id.equals(other.getId());
+    }
+
+    @Override
+    public String toString() {
+        return "Institution{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", postalCode='" + postalCode + '\'' +
+                ", adress='" + adress + '\'' +
+                '}';
+    }
 
 }

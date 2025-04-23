@@ -2,12 +2,11 @@ package com.dawkastresu.medicalclinic;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY;
 
@@ -15,11 +14,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY;
 @RequiredArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @JsonAutoDetect(fieldVisibility = ANY)
-public class InstitutionDto {
+public class CreateAppointmentCommand {
 
-    String name;
-    String postalCode;
-    String adress;
-    List<SimpleDoctorDto> doctors;
+    LocalDateTime startTime;
+    LocalDateTime endTime;
+    Long doctorId;
+    Long patientId;
 
 }

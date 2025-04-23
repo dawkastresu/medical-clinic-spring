@@ -22,6 +22,6 @@ public class DoctorDto {
     String lastName;
     Specialization specialization;
 
-    List<Institution> institutions;
+    List<SimpleInstitutionDto> institutions;
 
 }

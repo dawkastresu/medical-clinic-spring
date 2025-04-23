@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY;
 
 @Getter
@@ -22,5 +24,6 @@ public class RegisterDoctorCommand {
     String name;
     String postalCode;
     String adress;
+    List<Long> institutionIds;
 
 }

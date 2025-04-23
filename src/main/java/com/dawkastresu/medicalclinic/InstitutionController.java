@@ -13,7 +13,7 @@ public class InstitutionController {
     private final InstitutionService service;
 
     @GetMapping
-    public List<InstitutionDto> getAll(){
+    public List<InstitutionDto> getAll() {
         return service.getAll();
     }
 
