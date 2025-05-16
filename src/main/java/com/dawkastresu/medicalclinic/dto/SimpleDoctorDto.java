@@ -1,0 +1,24 @@
+package com.dawkastresu.medicalclinic.dto;
+
+import com.dawkastresu.medicalclinic.model.Specialization;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY;
+
+@Getter
+@RequiredArgsConstructor
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+@JsonAutoDetect(fieldVisibility = ANY)
+public class SimpleDoctorDto {
+
+    Long id;
+    String email;
+    String firstName;
+    String lastName;
+    Specialization specialization;
+
+}
