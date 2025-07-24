@@ -1,0 +1,39 @@
+databaseChangeLog:
+  - changeSet:
+      id: 7
+      author: xxx
+      changes:
+        - createTable:
+            tableName: APPOINTMENT_RATINGS
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: appointment_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_appointment
+                    references: APPOINTMENTS(id)
+              - column:
+                  name: doctor_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_doctor
+                    references: DOCTORS(id)
+              - column:
+                  name: rating_value
+                  type: double precision
+                  constraints:
+                    nullable: false
+              - column:
+                  name: rating_date
+                  type: timestamp
+                  constraints:
+                    nullable: false

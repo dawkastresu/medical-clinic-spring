@@ -1,0 +1,24 @@
+databaseChangeLog:
+  - changeSet:
+      id: 5
+      author: xxx
+      changes:
+        - createTable:
+            tableName: INSTITUTIONS
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+              - column:
+                  name: POSTAL_CODE
+                  type: varchar(255)
+              - column:
+                  name: adress
+                  type: varchar(255)

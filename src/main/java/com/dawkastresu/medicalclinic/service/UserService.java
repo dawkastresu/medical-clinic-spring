@@ -1,6 +1,7 @@
 package com.dawkastresu.medicalclinic.service;
 
 import com.dawkastresu.medicalclinic.command.CreateUserCommand;
+import com.dawkastresu.medicalclinic.model.Doctor;
 import com.dawkastresu.medicalclinic.utils.UserMapper;
 import com.dawkastresu.medicalclinic.repository.UserRepository;
 import com.dawkastresu.medicalclinic.utils.UserValidator;
@@ -8,7 +9,10 @@ import com.dawkastresu.medicalclinic.dto.UserDto;
 import com.dawkastresu.medicalclinic.exception.UserNotFoundException;
 import com.dawkastresu.medicalclinic.model.Password;
 import com.dawkastresu.medicalclinic.model.User;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -21,12 +25,12 @@ public class UserService {
     private final UserRepository repository;
     private final UserMapper mapper;
 
-    public List<UserDto> getAll() {
-        return repository.findAll().stream()
-                .map(mapper::toDto)
-                .toList();
+    public Page<UserDto> getAll(Pageable pageable) {
+        Page<User> page = repository.findAll(pageable);
+        return page.map(mapper::toDto);
     }
 
+    @Transactional
     public UserDto addNew(CreateUserCommand command) {
         User user = mapper.toEntity(command);
         if (UserValidator.validateUser(repository, user.getUsername())) {
@@ -35,6 +39,7 @@ public class UserService {
         return mapper.toDto(user);
     }
 
+    @Transactional
     public void remove(Long id) {
         repository.deleteById(id);
     }

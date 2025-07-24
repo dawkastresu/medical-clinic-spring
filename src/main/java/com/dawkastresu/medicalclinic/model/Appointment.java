@@ -29,6 +29,9 @@ public class Appointment {
     @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     private Doctor doctor;
 
+    @OneToOne(mappedBy = "appointment", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private AppointmentRating rating;
+
     private Long patientId;
 
     public static Appointment create(CreateAppointmentCommand command) {

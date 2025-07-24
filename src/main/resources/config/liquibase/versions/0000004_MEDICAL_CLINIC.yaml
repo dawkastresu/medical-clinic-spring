@@ -1,0 +1,31 @@
+databaseChangeLog:
+  - changeSet:
+      id: 4
+      author: xxx
+      changes:
+        - createTable:
+            tableName: APPOINTMENTS
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: START_TIME
+                  type: timestamp
+              - column:
+                  name: END_TIME
+                  type: timestamp
+              - column:
+                  name: doctor_id
+                  type: bigint
+                  constraints:
+                    foreignKey: true
+                    foreignKeyName: fk_appointments_doctor
+                    references: DOCTORS(id)
+              - column:
+                  name: PATIENT_ID
+                  type: bigint

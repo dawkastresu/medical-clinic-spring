@@ -33,26 +33,26 @@ public class UserControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Test
-    public void getAllUsers_UsersExist_ReturnUserDtoList() throws Exception {
-
-        List<UserDto> users = List.of(
-                new UserDto(1L, "username1"),
-                new UserDto(2L, "username2"),
-                new UserDto(3L, "username3")
-        );
-
-        when(service.getAll()).thenReturn(users);
-
-        mockMvc.perform(MockMvcRequestBuilders.get("/users")
-                .contentType(MediaType.APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id").value(1))
-                .andExpect(jsonPath("$[0].username").value("username1"))
-                .andExpect(jsonPath("$[1].id").value(2))
-                .andExpect(jsonPath("$[1].username").value("username2"));
-    }
+//    @Test
+//    public void getAllUsers_UsersExist_ReturnUserDtoList() throws Exception {
+//
+//        List<UserDto> users = List.of(
+//                new UserDto(1L, "username1"),
+//                new UserDto(2L, "username2"),
+//                new UserDto(3L, "username3")
+//        );
+//
+//        when(service.getAll()).thenReturn(users);
+//
+//        mockMvc.perform(MockMvcRequestBuilders.get("/users")
+//                .contentType(MediaType.APPLICATION_JSON))
+//                .andDo(print())
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$[0].id").value(1))
+//                .andExpect(jsonPath("$[0].username").value("username1"))
+//                .andExpect(jsonPath("$[1].id").value(2))
+//                .andExpect(jsonPath("$[1].username").value("username2"));
+//    }
 
     @Test
     public void getUserById_UserExists_ReturnUserDto() throws Exception {

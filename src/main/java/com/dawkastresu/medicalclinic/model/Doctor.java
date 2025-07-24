@@ -4,6 +4,7 @@ import com.dawkastresu.medicalclinic.command.RegisterDoctorCommand;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -46,17 +47,12 @@ public class Doctor {
     }
 
     public static Doctor create(RegisterDoctorCommand command) {
-        Institution institution = new Institution();
-            institution.setName(command.getName());
-            institution.setAdress(command.getAdress());
-            institution.setPostalCode(command.getPostalCode());
         Doctor doctor = new Doctor();
             doctor.setFirstName(command.getFirstName());
             doctor.setPassword(doctor.getPassword());
             doctor.setLastName(command.getLastName());
             doctor.setEmail(command.getEmail());
             doctor.setSpecialization(command.getSpecialization());
-            doctor.setInstitutions(List.of(institution));
             return doctor;
     }
 

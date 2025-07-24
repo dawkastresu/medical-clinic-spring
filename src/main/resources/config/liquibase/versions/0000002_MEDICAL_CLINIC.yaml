@@ -1,0 +1,42 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2
+      author: xxx
+      changes:
+        - createTable:
+            tableName: PATIENTS
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: email
+                  type: varchar(255)
+                  constraints:
+                    unique: true
+              - column:
+                  name: ID_CARD_NO
+                  type: varchar(255)
+              - column:
+                  name: FIRST_NAME
+                  type: varchar(255)
+              - column:
+                  name: LAST_NAME
+                  type: varchar(255)
+              - column:
+                  name: PHONE_NUMBER
+                  type: varchar(255)
+              - column:
+                  name: birthday
+                  type: timestamp
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    foreignKey: true
+                    foreignKeyName: id
+                    references: USERS(id)

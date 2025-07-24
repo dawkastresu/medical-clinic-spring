@@ -1,0 +1,22 @@
+databaseChangeLog:
+  - changeSet:
+      id: 6
+      author: xxx
+      changes:
+        - createTable:
+            tableName: DOCTOR_INSTITUTION
+            columns:
+              - column:
+                  name: institution_id
+                  type: bigint
+                  constraints:
+                    foreignKey: true
+                    foreignKeyName: fk_doctor_institution
+                    references: INSTITUTIONS(id)
+              - column:
+                  name: doctor_id
+                  type: bigint
+                  constraints:
+                    foreignKey: true
+                    foreignKeyName: fk_institution_doctor
+                    references: DOCTORS(id)

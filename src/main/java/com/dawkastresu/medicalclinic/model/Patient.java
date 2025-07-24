@@ -37,11 +37,11 @@ public class Patient {
     private User user;
 
     public void update(Patient patient) {
-        patient.setEmail(patient.getEmail());
-        patient.setFirstName(patient.getFirstName());
-        patient.setLastName(patient.getLastName());
-        patient.setPhoneNumber(patient.getPhoneNumber());
-        patient.setBirthday(patient.getBirthday());
+        this.setEmail(patient.getEmail());
+        this.setFirstName(patient.getFirstName());
+        this.setLastName(patient.getLastName());
+        this.setPhoneNumber(patient.getPhoneNumber());
+        this.setBirthday(patient.getBirthday());
     }
 
     public static Patient create(RegisterPatientCommand command) {
@@ -59,4 +59,32 @@ public class Patient {
         return patient;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Patient)) return false;
+
+        Patient other = (Patient) o;
+
+        return id != null &&
+                id.equals(other.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "Patient{" +
+                "birthday=" + birthday +
+                ", id=" + id +
+                ", email='" + email + '\'' +
+                ", idCardNo='" + idCardNo + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                '}';
+    }
 }

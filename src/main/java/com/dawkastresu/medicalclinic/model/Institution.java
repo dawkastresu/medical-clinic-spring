@@ -23,7 +23,7 @@ public class Institution {
 
     private String adress;
 
-    @ManyToMany(mappedBy = "institutions")
+    @ManyToMany(mappedBy = "institutions", cascade = CascadeType.ALL)
     private List<Doctor> doctors;
 
     @Override

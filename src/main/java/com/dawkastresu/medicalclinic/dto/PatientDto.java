@@ -25,6 +25,6 @@ public class PatientDto {
     LocalDate birthday;
     String fullName;
     String idCardNo;
-    User user;
+    UserDto user;
 
 }

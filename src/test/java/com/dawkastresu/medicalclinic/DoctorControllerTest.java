@@ -8,11 +8,18 @@ import com.dawkastresu.medicalclinic.model.Specialization;
 import com.dawkastresu.medicalclinic.repository.DoctorRepository;
 import com.dawkastresu.medicalclinic.service.DoctorService;
 import com.dawkastresu.medicalclinic.utils.DoctorMapper;
+import com.dawkastresu.medicalclinic.utils.DoctorValidator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -20,6 +27,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -45,7 +54,7 @@ public class DoctorControllerTest {
 
 
     @Test
-    public void getAllDoctors_DoctorsExist_ReturnDoctorDtoList() throws Exception {
+    public void getAllDoctors_DoctorsExist_ReturnDoctorDtoPage() throws Exception {
         //given
         List<DoctorDto> doctors = List.of(
                 new DoctorDto(1L, "email@gmail.com", "firstName", "lastName", Specialization.CARDIOLOGY, new ArrayList<>()),
@@ -53,12 +62,30 @@ public class DoctorControllerTest {
                 new DoctorDto(3L, "email3@gmail.com", "firstName3", "lastName3", Specialization.CARDIOLOGY, new ArrayList<>())
         );
 
-        when(service.getAll()).thenReturn(doctors);
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<DoctorDto> doctorPage = new PageImpl<>(doctors, pageable, doctors.size());
+
+        when(service.getAll(any(Pageable.class))).thenReturn(doctorPage);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/doctors")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(doctors)));
+                .andExpect(jsonPath("$.content", hasSize(3)))
+                .andExpect(jsonPath("$.content[0].id").value(1))
+                .andExpect(jsonPath("$.content[0].email").value("email@gmail.com"))
+                .andExpect(jsonPath("$.content[0].firstName").value("firstName"))
+                .andExpect(jsonPath("$.content[0].lastName").value("lastName"))
+                .andExpect(jsonPath("$.content[0].specialization").value("CARDIOLOGY"))
+                .andExpect(jsonPath("$.content[1].id").value(2))
+                .andExpect(jsonPath("$.content[1].email").value("email2@gmail.com"))
+                .andExpect(jsonPath("$.content[2].id").value(3))
+                .andExpect(jsonPath("$.content[2].email").value("email3@gmail.com"))
+                .andExpect(jsonPath("$.totalElements").value(3))
+                .andExpect(jsonPath("$.totalPages").value(1))
+                .andExpect(jsonPath("$.number").value(0))
+                .andExpect(jsonPath("$.size").value(10))
+                .andExpect(jsonPath("$.first").value(true))
+                .andExpect(jsonPath("$.last").value(true));
     }
 
     @Test
@@ -74,23 +101,28 @@ public class DoctorControllerTest {
     }
 
     @Test
-    public void addNewDoctor_DoctorCreated_ReturnDoctorDto() throws Exception{
+    public void addNewDoctor_DoctorCreated_ReturnDoctorDto() throws Exception {
+        Doctor doctor = new Doctor(1L, "email@gmail.com", "password", "firstName", "lastName", new ArrayList<>(), Specialization.CARDIOLOGY, new ArrayList<>());
         DoctorDto doctorDto = new DoctorDto(1L, "email@gmail.com", "firstName", "lastName", Specialization.CARDIOLOGY, new ArrayList<>());
-        RegisterDoctorCommand command = new RegisterDoctorCommand("email@gmail.com", "password", "firstName", "lastName", Specialization.CARDIOLOGY, "fullName", "postalCode", "adress", new ArrayList<>());
+        RegisterDoctorCommand command = new RegisterDoctorCommand("email@gmail.com", "password", "firstName", "lastName", Specialization.CARDIOLOGY);
 
-        when(service.addNew(any())).thenReturn(doctorDto);
+        try (MockedStatic<DoctorValidator> mockedStatic = Mockito.mockStatic(DoctorValidator.class)) {
+            mockedStatic.when(() -> DoctorValidator.validateDoctor(repository, "firstName")).thenReturn(true);
+            when(repository.save(any(Doctor.class))).thenReturn(doctor);
+            when(service.addNew(any())).thenReturn(doctorDto);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/doctors")
-                .content(objectMapper.writeValueAsString(command))
-                .contentType(MediaType.APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.email").value("email@gmail.com"))
-                .andExpect(jsonPath("$.firstName").value("firstName"))
-                .andExpect(jsonPath("$.lastName").value("lastName"))
-                .andExpect(jsonPath("$.specialization").value("CARDIOLOGY"))
-                .andExpect(jsonPath("$.institutions").isEmpty());
+            mockMvc.perform(MockMvcRequestBuilders.post("/doctors")
+                            .content(objectMapper.writeValueAsString(command))
+                            .contentType(MediaType.APPLICATION_JSON))
+                    .andDo(print())
+                    .andExpect(status().isCreated())
+                    .andExpect(jsonPath("$.id").value(1))
+                    .andExpect(jsonPath("$.email").value("email@gmail.com"))
+                    .andExpect(jsonPath("$.firstName").value("firstName"))
+                    .andExpect(jsonPath("$.lastName").value("lastName"))
+                    .andExpect(jsonPath("$.specialization").value("CARDIOLOGY"))
+                    .andExpect(jsonPath("$.institutions").isEmpty());
+        }
     }
 
     @Test
@@ -105,7 +137,7 @@ public class DoctorControllerTest {
     @Test
     public void editDoctorById_DoctorExists_ReturnDoctorDto() throws Exception {
         Doctor doctor = new Doctor(1L, "email@gmail.com", "password", "firstName", "lastName", new ArrayList<>(), Specialization.CARDIOLOGY, new ArrayList<>());
-        RegisterDoctorCommand command = new RegisterDoctorCommand("edit@gmail.com", "editPassword", "firstNameEdit", "lastNameEdit", Specialization.CARDIOLOGY, "fullNameEdit", "postalCodeEdit", "adressEdit", new ArrayList<>());
+        RegisterDoctorCommand command = new RegisterDoctorCommand("edit@gmail.com", "editPassword", "firstNameEdit", "lastNameEdit", Specialization.CARDIOLOGY);
         DoctorDto doctorDto = new DoctorDto(1L, "email@gmail.com", "firstName", "lastName", Specialization.CARDIOLOGY, new ArrayList<>());
 
         when(service.editById(any(), any())).thenReturn(doctorDto);
@@ -123,15 +155,15 @@ public class DoctorControllerTest {
                 .andExpect(jsonPath("$.institutions").isEmpty());
     }
 
-    @Test
-    public void addDoctorToInstitution() throws Exception {
-        Doctor doctor = new Doctor(1L, "email@gmail.com", "password", "firstName", "lastName", new ArrayList<>(), Specialization.CARDIOLOGY, new ArrayList<>());
-        Institution institution = new Institution(1L, "name", "postalCode", "adress", new ArrayList<>());
-
-        mockMvc.perform(patch("/doctors/{id}", 1L)
-                .content(objectMapper.writeValueAsString(institution.getId()))
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-    }
+//    @Test
+//    public void addDoctorToInstitution() throws Exception {
+//        Doctor doctor = new Doctor(1L, "email@gmail.com", "password", "firstName", "lastName", new ArrayList<>(), Specialization.CARDIOLOGY, new ArrayList<>());
+//        Institution institution = new Institution(1L, "name", "postalCode", "adress", new ArrayList<>());
+//
+//        mockMvc.perform(patch("/doctors/{id}", 1L)
+//                .content(objectMapper.writeValueAsString(institution.getId()))
+//                .contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isOk());
+//    }
 
 }

@@ -1,12 +1,17 @@
 package com.dawkastresu.medicalclinic.service;
 
 import com.dawkastresu.medicalclinic.command.CreateInstitutionCommand;
+import com.dawkastresu.medicalclinic.exception.InstitutionNotFoundException;
 import com.dawkastresu.medicalclinic.utils.InstitutionMapper;
 import com.dawkastresu.medicalclinic.repository.InstitutionRepository;
 import com.dawkastresu.medicalclinic.utils.InstitutionValidator;
 import com.dawkastresu.medicalclinic.dto.InstitutionDto;
 import com.dawkastresu.medicalclinic.model.Institution;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,12 +23,12 @@ public class InstitutionService {
     private final InstitutionRepository repository;
     private final InstitutionMapper mapper;
 
-    public List<InstitutionDto> getAll() {
-        return repository.findAll().stream()
-                .map(mapper::toDto)
-                .toList();
+    public Page<InstitutionDto> getAll(Pageable pageable) {
+        Page<Institution> page = repository.findAll(pageable);
+        return page.map(mapper::toDto);
     }
 
+    @Transactional
     public InstitutionDto addNew(CreateInstitutionCommand createInstitutionCommand) {
         Institution institution = mapper.toEntity(createInstitutionCommand);
         if (InstitutionValidator.validateInstitution(repository, institution.getName())) {
@@ -32,6 +37,7 @@ public class InstitutionService {
         return mapper.toDto(institution);
     }
 
+    @Transactional
     public void remove(String name){
         repository.deleteByName(name);
     }
